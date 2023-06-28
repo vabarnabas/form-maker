@@ -8,13 +8,17 @@ f.title("New Element");
 f.select("type")
   .title("Input Type")
   .options([
+    createOption("Text"),
     createOption("Input"),
     createOption("Select"),
     createOption("Checkbox"),
   ])
   .required();
 f.input("title").title("Title").required().placeholder("Title");
-f.input("placeholder").title("Placeholder").placeholder("Placeholder");
+f.input("placeholder")
+  .title("Placeholder")
+  .placeholder("Placeholder")
+  .visible({ key: "type", value: "text", notEqual: true });
 f.input("options")
   .title("Options")
   .description(
@@ -23,7 +27,9 @@ f.input("options")
   .placeholder("Green, Yellow, Blue")
   .visible({ key: "type", value: "select" })
   .required();
-f.checkbox("isValidation").title("Do you want to add validations?");
+f.checkbox("isValidation")
+  .title("Do you want to add validations?")
+  .visible({ key: "type", value: "text", notEqual: true });
 f.input("min")
   .title("Minimum length")
   .number()

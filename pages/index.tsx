@@ -129,7 +129,7 @@ export default function Home() {
                   <label htmlFor={element.key}>
                     {element.title}
                     {element.validations?.required ? (
-                      <span className="text-rose-500"> *</span>
+                      <span className="text-pink-500"> *</span>
                     ) : null}
                   </label>
                 </div>

@@ -5,6 +5,11 @@ export interface ElementComparison {
   notEqual?: boolean;
 }
 
+export interface Comparison {
+  comparison: ElementComparison | ElementComparison[];
+  type?: "AND" | "OR";
+}
+
 export interface BaseElement {
   title: string;
   description?: string;
@@ -12,6 +17,18 @@ export interface BaseElement {
   visible?: ElementComparison | ElementComparison[];
   disabled?: ElementComparison;
   key: string;
+}
+
+export type TextType =
+  | "paragraph-small"
+  | "paragraph"
+  | "body"
+  | "heading 2"
+  | "heading 3";
+export interface Text extends BaseElement {
+  type: "text";
+  textType: TextType;
+  validations: never;
 }
 
 export interface InputValidation {
@@ -57,9 +74,9 @@ export interface Checkbox extends BaseElement {
   validations?: CheckboxValidations;
 }
 
-export type FormElement = Input | Select | Checkbox;
+export type FormElement = Input | Select | Checkbox | Text;
 
-export type ElementType = "input" | "select" | "checkbox";
+export type ElementType = "input" | "select" | "checkbox" | "text";
 
 export interface FormObject {
   title: string;

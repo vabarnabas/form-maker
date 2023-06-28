@@ -36,23 +36,23 @@ export default function NewForm() {
     <Layout title="New Form">
       <form
         ref={parent}
-        className="flex flex-col gap-4 w-full max-w-[1024px] px-4 mt-20 mb-6"
+        className="flex flex-col gap-y-8 w-full max-w-[1024px] px-4 mt-20 mb-6"
         onSubmit={onSubmit}
       >
         {fields.map((field, index) => (
-          <div
-            key={field.id}
-            className="shadow bg-gray-50 p-4 rounded-md flex flex-col gap-y-2"
-          >
+          <div key={field.id} className="rounded-md flex flex-col gap-y-2">
+            <p className="mb-2 font-medium text-2xl">{`Element ${
+              index + 1
+            }`}</p>
             {fieldForm.elements
               .filter((element) => isVisible(element, getValues, index))
               .map((element) => (
                 <div key={element.key} className="w-full">
-                  {element.type !== "checkbox" ? (
+                  {element.type !== "checkbox" && element.type !== "text" ? (
                     <p className="text-sm">
                       {element.title}
                       {element.validations?.required ? (
-                        <span className="text-rose-500"> *</span>
+                        <span className="text-pink-500"> *</span>
                       ) : null}
                     </p>
                   ) : null}
@@ -143,6 +143,11 @@ export default function NewForm() {
                       </label>
                     </div>
                   ) : null}
+                  {element.type === "text" ? (
+                    <p key={`elements.${index}.${element.key}`} className="">
+                      {element.title}
+                    </p>
+                  ) : null}
                   {/* <p className="text-rose-500 text-xs mt-1">
                     {errors.elements?.[index.toString()]?.message as string}
                   </p> */}
@@ -150,21 +155,23 @@ export default function NewForm() {
               ))}
           </div>
         ))}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            append({});
-          }}
-          className="border-pink-500 hover:border-pink-600 text-pink-500 hover:text-pink-600 border py-1.5 px-3 rounded sm:col-span-2"
-        >
-          Add Element
-        </button>
-        <button
-          onClick={(e) => onSubmit(e)}
-          className="bg-pink-500 hover:bg-pink-600 text-white py-1.5 px-3 rounded sm:col-span-2"
-        >
-          Submit
-        </button>
+        <div className="flex flex-col gap-y-4">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              append({});
+            }}
+            className="border-pink-500 hover:border-pink-600 text-pink-500 hover:text-pink-600 border py-1.5 px-3 rounded sm:col-span-2"
+          >
+            Add Element
+          </button>
+          <button
+            onClick={(e) => onSubmit(e)}
+            className="bg-pink-500 hover:bg-pink-600 text-white py-1.5 px-3 rounded sm:col-span-2"
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </Layout>
   );

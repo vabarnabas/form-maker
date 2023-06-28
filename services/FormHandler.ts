@@ -9,6 +9,8 @@ import {
   InputType,
   SelectOption,
   ElementComparison,
+  Text,
+  TextType,
 } from "@/types/form.types";
 
 export class FormHandler {
@@ -35,6 +37,9 @@ export class FormHandler {
       case "checkbox":
         element = { type: "checkbox", key, defaultValue: false } as Checkbox;
         break;
+      case "text":
+        element = { type: "text", key, textType: "body" } as Text;
+        break;
     }
 
     this.form.elements.push(element);
@@ -57,6 +62,7 @@ export class FormHandler {
       placeholder?: string;
       visible?: ElementComparison | ElementComparison[];
       disabled?: ElementComparison;
+      textType?: TextType;
     }
   ) {
     const element = this.form.elements[index];
@@ -73,6 +79,10 @@ export class FormHandler {
 
     if (options?.placeholder) {
       element.placeholder = options.placeholder;
+    }
+
+    if (options?.textType && element.type === "text") {
+      element.textType = options.textType;
     }
 
     if (options?.min && element.type === "input") {
@@ -116,6 +126,31 @@ export class FormHandler {
     if (options?.disabled) {
       element.disabled = options.disabled;
     }
+  }
+
+  text(key: string) {
+    let index: number = this.addElement("text", key);
+
+    const functions = {
+      title: (title: string) => {
+        this.editElement(index, { title });
+        return functions;
+      },
+      description: (description: string) => {
+        this.editElement(index, { description });
+        return functions;
+      },
+      visible: (visible: ElementComparison | ElementComparison[]) => {
+        this.editElement(index, { visible });
+        return functions;
+      },
+      textType: (textType: TextType) => {
+        this.editElement(index, { textType });
+        return functions;
+      },
+    };
+
+    return functions;
   }
 
   input(key: string) {
