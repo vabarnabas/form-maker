@@ -59,11 +59,7 @@ export interface Checkbox extends BaseElement {
 
 export type FormElement = Input | Select | Checkbox;
 
-export enum ElementType {
-  INPUT = "INPUT",
-  SELECT = "SELECT",
-  CHECKBOX = "CHECKBOX",
-}
+export type ElementType = "input" | "select" | "checkbox";
 
 export interface FormObject {
   title: string;

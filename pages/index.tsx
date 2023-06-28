@@ -6,6 +6,7 @@ import isVisible from "@/services/isVisible";
 import isDisabled from "@/services/isDisabled";
 import autoAnimate from "@formkit/auto-animate";
 import Layout from "@/components/layout/layout";
+import { newForm } from "@/forms/field-form";
 
 export default function Home() {
   const form = useForm();
@@ -18,7 +19,6 @@ export default function Home() {
   } = form;
 
   const parent = useRef(null);
-
 
   useEffect(() => {
     parent.current && autoAnimate(parent.current);
@@ -35,7 +35,7 @@ export default function Home() {
         onSubmit={onSubmit}
         className="flex flex-col gap-2 w-full max-w-[1024px] px-4 mt-20 mb-6"
       >
-        {testForm.elements
+        {newForm.elements
           .filter((element) => isVisible(element, getValues))
           .map((element) => (
             <div key={element.key} className="w-full">

@@ -1,5 +1,6 @@
 import { FormHandler } from "@/services/FormHandler";
 import createOption from "@/services/createOption";
+import { FormObject } from "@/types/form.types";
 
 const f = new FormHandler();
 
@@ -13,6 +14,7 @@ f.select("type")
   ])
   .required();
 f.input("title").title("Title").required().placeholder("Title");
+f.input("placeholder").title("Placeholder").placeholder("Placeholder");
 f.input("options")
   .title("Options")
   .description(
@@ -43,3 +45,61 @@ f.checkbox("isRequired")
   .visible({ key: "isValidation", value: true });
 
 export const fieldForm = f.form;
+
+export const newForm: FormObject = {
+  elements: [
+    {
+      type: "input",
+      inputType: "text",
+      key: "first-name",
+      title: "First Name",
+      placeholder: "First Name",
+      validations: {
+        required: true,
+      },
+    },
+    {
+      type: "input",
+      inputType: "text",
+      key: "last-name",
+      title: "Last Name",
+      placeholder: "Last Name",
+      validations: {
+        required: true,
+      },
+    },
+    {
+      type: "select",
+      key: "what-is-your-favorite-color?",
+      view: "list",
+      title: "What is your Favorite Color?",
+      options: [
+        {
+          title: "Green",
+          value: "green",
+        },
+        {
+          title: "Red",
+          value: "red",
+        },
+        {
+          title: "Blue",
+          value: "blue",
+        },
+      ],
+      validations: {
+        required: true,
+      },
+    },
+    {
+      type: "checkbox",
+      key: "i-accept-the-terms-and-conditions",
+      defaultValue: false,
+      title: "I accept the Terms and Conditions",
+      validations: {
+        required: true,
+      },
+    },
+  ],
+  title: "Test Form",
+};

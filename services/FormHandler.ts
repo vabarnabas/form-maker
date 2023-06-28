@@ -26,13 +26,13 @@ export class FormHandler {
     let element: FormElement;
 
     switch (elementType) {
-      case ElementType.INPUT:
+      case "input":
         element = { type: "input", inputType: "text", key } as Input;
         break;
-      case ElementType.SELECT:
+      case "select":
         element = { type: "select", key, view: "list" } as Select;
         break;
-      case ElementType.CHECKBOX:
+      case "checkbox":
         element = { type: "checkbox", key, defaultValue: false } as Checkbox;
         break;
     }
@@ -119,7 +119,7 @@ export class FormHandler {
   }
 
   input(key: string) {
-    let index: number = this.addElement(ElementType.INPUT, key);
+    let index: number = this.addElement("input", key);
 
     const functions = {
       title: (title: string) => {
@@ -168,7 +168,7 @@ export class FormHandler {
   }
 
   select(key: string) {
-    let index: number = this.addElement(ElementType.SELECT, key);
+    let index: number = this.addElement("select", key);
 
     const functions = {
       title: (title: string) => {
@@ -213,7 +213,7 @@ export class FormHandler {
   }
 
   checkbox(key: string) {
-    let index: number = this.addElement(ElementType.CHECKBOX, key);
+    let index: number = this.addElement("checkbox", key);
 
     const functions = {
       title: (title: string) => {

@@ -1,5 +1,6 @@
 import Layout from "@/components/layout/layout";
 import { fieldForm } from "@/forms/field-form";
+import convertToForm, { Element } from "@/services/convertToForm";
 import isDisabled from "@/services/isDisabled";
 import isVisible from "@/services/isVisible";
 import autoAnimate from "@formkit/auto-animate";
@@ -21,19 +22,20 @@ export default function NewForm() {
 
   const parent = useRef(null);
 
-  console.log(getValues());
-
   useEffect(() => {
     parent.current && autoAnimate(parent.current);
   }, [parent]);
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit((data) =>
+    console.log(convertToForm("Test Form", data.elements as Element[]))
+  );
 
   watch();
 
   return (
     <Layout title="New Form">
       <form
+        ref={parent}
         className="flex flex-col gap-4 w-full max-w-[1024px] px-4 mt-20 mb-6"
         onSubmit={onSubmit}
       >
@@ -141,9 +143,9 @@ export default function NewForm() {
                       </label>
                     </div>
                   ) : null}
-                  <p className="text-rose-500 text-xs mt-1">
-                    {errors[element.key]?.message as string}
-                  </p>
+                  {/* <p className="text-rose-500 text-xs mt-1">
+                    {errors.elements?.[index.toString()]?.message as string}
+                  </p> */}
                 </div>
               ))}
           </div>
@@ -156,6 +158,12 @@ export default function NewForm() {
           className="border-pink-500 hover:border-pink-600 text-pink-500 hover:text-pink-600 border py-1.5 px-3 rounded sm:col-span-2"
         >
           Add Element
+        </button>
+        <button
+          onClick={(e) => onSubmit(e)}
+          className="bg-pink-500 hover:bg-pink-600 text-white py-1.5 px-3 rounded sm:col-span-2"
+        >
+          Submit
         </button>
       </form>
     </Layout>
