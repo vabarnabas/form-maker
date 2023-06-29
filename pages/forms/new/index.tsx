@@ -1,22 +1,27 @@
 import autoAnimate from "@formkit/auto-animate"
 import clsx from "clsx"
+import { addDoc, collection } from "firebase/firestore"
+import { useRouter } from "next/router"
 import React, { ElementType, useEffect, useRef } from "react"
 import { FormProvider, useFieldArray, useForm } from "react-hook-form"
 import { BsCaretDownFill, BsCaretUpFill } from "react-icons/bs"
 
 import FieldForm from "@/components/field-form/field-form"
 import Layout from "@/components/layout/layout"
+import { db } from "@/firebase/firebase.config"
 import { fieldForm } from "@/forms/field-form"
 import { formInfoForm } from "@/forms/form-info-form"
 import convertToForm, { Element } from "@/services/convertToForm"
 import isVisible from "@/services/isVisible"
 import { FormElement } from "@/types/form.types"
 
-import FormElementRender from "../../components/form-element/form-element"
+import FormElementRender from "../../../components/form-element/form-element"
 
 export default function NewForm() {
   const form = useForm()
   const { handleSubmit, getValues, watch, control } = form
+
+  const router = useRouter()
 
   const { fields, append, remove, swap } = useFieldArray({
     name: "elements",
@@ -25,15 +30,22 @@ export default function NewForm() {
 
   const parent = useRef(null)
 
-  console.log(fieldForm)
-
   useEffect(() => {
     parent.current && autoAnimate(parent.current)
   }, [parent])
 
-  const onSubmit = handleSubmit((data) =>
-    console.log(convertToForm("Test Form", data.elements as Element[]))
-  )
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const formObject = convertToForm(data.title, data.elements as Element[])
+      const forms = collection(db, "forms")
+
+      await addDoc(forms, { formObject })
+
+      router.push("/")
+    } catch {
+      console.log("error")
+    }
+  })
 
   watch()
   const elements = watch("elements")

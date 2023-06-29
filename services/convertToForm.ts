@@ -1,25 +1,24 @@
-import { FormElement } from "@/types/form.types";
-import { FormHandler } from "./FormHandler";
-import createKey from "./createKey";
-import createOption from "./createOption";
+import createKey from "./createKey"
+import createOption from "./createOption"
+import { FormHandler } from "./FormHandler"
 
 export interface Element {
-  title: string;
-  isRequired?: boolean;
-  isValidating?: boolean;
-  placeholder?: string;
-  min?: string;
-  max?: string;
-  options?: string;
-  type: "input" | "select" | "checkbox";
+  title: string
+  isRequired?: boolean
+  isValidating?: boolean
+  placeholder?: string
+  min?: string
+  max?: string
+  options?: string
+  type: "input" | "select" | "checkbox"
 }
 
 export default function convertToForm(title: string, elements: Element[]) {
-  const f = new FormHandler();
-  f.title(title);
+  const f = new FormHandler()
+  f.title(title)
 
   for (const element of elements) {
-    const index = f.addElement(element.type, createKey(element.title));
+    const index = f.addElement(element.type, createKey(element.title))
 
     f.editElement(index, {
       title: element.title,
@@ -30,8 +29,8 @@ export default function convertToForm(title: string, elements: Element[]) {
       options: element.options
         ? element.options.split(", ").map((option) => createOption(option))
         : undefined,
-    });
+    })
   }
 
-  return f.form;
+  return f.form
 }

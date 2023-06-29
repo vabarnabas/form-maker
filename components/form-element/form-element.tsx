@@ -153,6 +153,7 @@ export default function FormElementRender({ element, isFieldArray }: Props) {
             "text-sm": element.textType === "paragraph",
             "text-lg font-medium": element.textType === "heading-3",
             "text-xl font-medium": element.textType === "heading-2",
+            "text-2xl font-medium": element.textType === "heading-1",
           })}
         >
           {element.title}

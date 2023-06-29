@@ -1,46 +1,51 @@
 import autoAnimate from "@formkit/auto-animate"
+import { collection, getDocs, limit, query } from "firebase/firestore"
+import { useRouter } from "next/router"
 import React, { useEffect, useRef } from "react"
-import { FormProvider, useForm } from "react-hook-form"
+import useSWR from "swr"
 
 import Layout from "@/components/layout/layout"
-import { newForm } from "@/forms/new-form"
-import { testForm } from "@/forms/test-form"
-import isVisible from "@/services/isVisible"
-
-import FormElementRender from "../components/form-element/form-element"
+import { db } from "@/firebase/firebase.config"
+import { FormDocument } from "@/types/form.types"
 
 export default function Home() {
-  const form = useForm()
-  const { handleSubmit, getValues, watch } = form
-
   const parent = useRef(null)
+  const router = useRouter()
 
   useEffect(() => {
     parent.current && autoAnimate(parent.current)
   }, [parent])
 
-  const onSubmit = handleSubmit((data) => console.log(data))
+  const { data, isLoading } = useSWR(["forms"], async () => {
+    const forms = collection(db, "forms")
+    const q = query(forms, limit(20))
 
-  watch()
+    const snap = await getDocs(q)
+    return snap.docs.map(
+      (doc) =>
+        ({
+          ...doc.data(),
+          id: doc.id,
+        } as FormDocument)
+    )
+  })
 
   return (
-    <Layout title={testForm.title}>
-      <FormProvider {...form}>
-        <form
-          ref={parent}
-          onSubmit={onSubmit}
-          className="mb-6 mt-20 flex w-full max-w-[1024px] flex-col gap-2 px-4"
-        >
-          {newForm.elements
-            .filter((element) => isVisible(element, getValues))
-            .map((element) => (
-              <FormElementRender key={element.key} element={element} />
-            ))}
-          <button className="rounded bg-pink-500 px-3 py-1.5 text-white hover:bg-pink-600 sm:col-span-2">
-            Submit
-          </button>
-        </form>
-      </FormProvider>
+    <Layout title={"Forms by Barni"}>
+      <div className="mb-6 mt-20 flex w-full max-w-[1024px] flex-col gap-y-4 px-4">
+        {!isLoading && data
+          ? data.map((form) => (
+              <div
+                onClick={() => router.push(`forms/${form.id}`)}
+                key={form.id}
+                className="cursor-pointer"
+              >
+                <p className="text-xl font-medium">{form.formObject.title}</p>
+                <p className="text-xs text-pink-500">{form.id}</p>
+              </div>
+            ))
+          : null}
+      </div>
     </Layout>
   )
 }

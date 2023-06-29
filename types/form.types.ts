@@ -1,3 +1,8 @@
+export interface FormDocument {
+  id: string
+  formObject: FormObject
+}
+
 // Key, Value, Not Equal
 export interface ElementComparison {
   key: string
@@ -23,6 +28,7 @@ export type TextType =
   | "paragraph-small"
   | "paragraph"
   | "body"
+  | "heading-1"
   | "heading-2"
   | "heading-3"
 export interface Text extends BaseElement {
@@ -45,7 +51,7 @@ export interface InputValidation {
   required?: boolean
 }
 
-export type InputType = "text" | "number" | "email"
+export type InputType = "text" | "number" | "email" | "password"
 
 export interface Input extends BaseElement {
   type: "input"
