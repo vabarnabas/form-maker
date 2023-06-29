@@ -1,14 +1,15 @@
-import { FormElement } from "@/types/form.types";
-import { FieldValues, UseFormGetValues } from "react-hook-form";
+import { FieldValues, UseFormGetValues } from "react-hook-form"
+
+import { FormElement } from "@/types/form.types"
 
 export default function isVisible(
   element: FormElement,
   getValues: UseFormGetValues<FieldValues>,
   index?: number
 ): boolean {
-  let returnValue: boolean = true;
+  let returnValue = true
 
-  if (!element.visible) return true;
+  if (!element.visible) return true
 
   if (!Array.isArray(element.visible)) {
     return element.visible.notEqual
@@ -21,7 +22,7 @@ export default function isVisible(
           index !== undefined
             ? `elements.${index}.${element.visible.key}`
             : element.visible.key
-        ) === element.visible.value;
+        ) === element.visible.value
   } else {
     for (const check of element.visible) {
       returnValue = returnValue
@@ -32,8 +33,8 @@ export default function isVisible(
           : getValues(
               index !== undefined ? `elements.${index}.${check.key}` : check.key
             ) === check.value
-        : false;
+        : false
     }
-    return returnValue;
+    return returnValue
   }
 }

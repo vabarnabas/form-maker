@@ -1,10 +1,10 @@
-import { FormHandler } from "@/services/FormHandler";
-import createOption from "@/services/createOption";
-import { FormObject } from "@/types/form.types";
+import createOption from "@/services/createOption"
+import { e } from "@/services/ElementBuilder"
+import { FormHandler } from "@/services/FormHandler"
 
-const f = new FormHandler();
+const f = new FormHandler()
 
-f.title("New Element");
+f.title("New Element")
 f.select("type")
   .title("Input Type")
   .options([
@@ -13,12 +13,12 @@ f.select("type")
     createOption("Select"),
     createOption("Checkbox"),
   ])
-  .required();
-f.input("title").title("Title").required().placeholder("Title");
+  .required()
+f.input("title").title("Title").required().placeholder("Title")
 f.input("placeholder")
   .title("Placeholder")
   .placeholder("Placeholder")
-  .visible({ key: "type", value: "text", notEqual: true });
+  .visible({ key: "type", value: "input" })
 f.input("options")
   .title("Options")
   .description(
@@ -26,86 +26,48 @@ f.input("options")
   )
   .placeholder("Green, Yellow, Blue")
   .visible({ key: "type", value: "select" })
-  .required();
+  .required()
+f.select("textStyle")
+  .title("Text Style")
+  .options([
+    createOption("Paragraph Small"),
+    createOption("Paragraph"),
+    createOption("Body"),
+    createOption("Heading 3"),
+    createOption("Heading 2"),
+  ])
+  .visible({ key: "type", value: "text" })
 f.checkbox("isValidation")
   .title("Do you want to add validations?")
-  .visible({ key: "type", value: "text", notEqual: true });
-f.input("min")
-  .title("Minimum length")
-  .number()
-  .placeholder("Minimum Length")
+  .visible({ key: "type", value: "text", notEqual: true })
+f.text("validations")
+  .title("Validation Options")
+  .textType("heading-3")
+  .visible({ key: "isValidation", value: true })
+f
+  .group("minMaxValidation")
+  .title("Min Max Validation")
+  .elements([
+    e
+      .input("min")
+      .title("Minimum length")
+      .number()
+      .placeholder("Minimum Length")
+      .build(),
+    e
+      .input("min")
+      .title("Minimum length")
+      .number()
+      .placeholder("Minimum Length")
+      .build(),
+  ])
   .visible([
     { key: "isValidation", value: true },
     { key: "type", value: "input" },
-  ]);
-f.input("max")
-  .title("Maximum length")
-  .number()
-  .placeholder("Maximum Length")
-  .visible([
-    { key: "isValidation", value: true },
-    { key: "type", value: "input" },
-  ]);
-f.checkbox("isRequired")
-  .title("Required")
-  .visible({ key: "isValidation", value: true });
+  ]),
+  f
+    .checkbox("isRequired")
+    .title("Required")
+    .visible({ key: "isValidation", value: true })
 
-export const fieldForm = f.form;
-
-export const newForm: FormObject = {
-  elements: [
-    {
-      type: "input",
-      inputType: "text",
-      key: "first-name",
-      title: "First Name",
-      placeholder: "First Name",
-      validations: {
-        required: true,
-      },
-    },
-    {
-      type: "input",
-      inputType: "text",
-      key: "last-name",
-      title: "Last Name",
-      placeholder: "Last Name",
-      validations: {
-        required: true,
-      },
-    },
-    {
-      type: "select",
-      key: "what-is-your-favorite-color?",
-      view: "list",
-      title: "What is your Favorite Color?",
-      options: [
-        {
-          title: "Green",
-          value: "green",
-        },
-        {
-          title: "Red",
-          value: "red",
-        },
-        {
-          title: "Blue",
-          value: "blue",
-        },
-      ],
-      validations: {
-        required: true,
-      },
-    },
-    {
-      type: "checkbox",
-      key: "i-accept-the-terms-and-conditions",
-      defaultValue: false,
-      title: "I accept the Terms and Conditions",
-      validations: {
-        required: true,
-      },
-    },
-  ],
-  title: "Test Form",
-};
+export const fieldForm = f.form
